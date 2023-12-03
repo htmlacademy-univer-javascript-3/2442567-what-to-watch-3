@@ -8,12 +8,10 @@ import MovieReviewScreen from '../../pages/movie-review-screen/movie-review-scre
 import PlayerScreen from '../../pages/player-screen/player-screen';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import PrivateRoute from '../private-route/private-route';
+import { FilmInfo } from '../../types/types';
 
 type AppProps = {
-  filmGenre: string;
-  filmYear: number;
-  filmTitle: string;
-  filmImage: string;
+  film: FilmInfo[];
 }
 
 function App(props: AppProps): JSX.Element {
@@ -21,17 +19,17 @@ function App(props: AppProps): JSX.Element {
     <BrowserRouter>
       <Routes>
         <Route path='/' >
-          <Route index element={<MainScreen filmGenre={props.filmGenre} filmTitle={props.filmTitle} filmYear={props.filmYear} filmImage={props.filmImage} />} />
+          <Route index element={<MainScreen films={props.film} />} />
           <Route path={AppRoute.Login} element={<SignInScreen />} />
           <Route path={AppRoute.MyList} element={
             <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
-              <PersonalMoviesScreen />
+              <PersonalMoviesScreen films={props.film}/>
             </PrivateRoute>
             
           } />
           <Route path={AppRoute.Film}>
-            <Route index element={<MoviePageScreen />}/>
-            <Route path="review" element={<MovieReviewScreen />} />
+            <Route index element={<MoviePageScreen films={props.film}/>}/>
+            <Route path="review" element={<MovieReviewScreen films={props.film}/>} />
           </Route>
           <Route path={AppRoute.Player} element={<PlayerScreen />} />
         </Route>
@@ -42,17 +40,3 @@ function App(props: AppProps): JSX.Element {
 }
 
 export default App;
-
-{/* <Routes>
-<Route path='/' >
-  <Route index element={<MainScreen filmGenre={props.filmGenre} filmTitle={props.filmTitle} filmYear={props.filmYear} filmImage={props.filmImage} />} />
-  <Route path='login' element={<SignInScreen />} />
-  <Route path="mylist" element={<PersonalMoviesScreen />} />
-  <Route path="films/:id">
-      <Route index element={<MoviePageScreen />} />
-      <Route path="/review" element={<MovieReviewScreen />} />
-  </Route>
-  <Route path="player/:id" element={<PlayerScreen />} />
-</Route>
-<Route path="*" element={<Error404 />} />
-</Routes> */}
