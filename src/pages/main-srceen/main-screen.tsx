@@ -1,18 +1,16 @@
-import FilmCard from '../../components/film-card/film-card';
+import { FilmInfo } from '../../types/types';
+import FilmList from '../../components/film-list/film-list';
 
 type MainScreenProps = {
-  filmGenre: string;
-  filmYear: number;
-  filmTitle: string;
-  filmImage: string;
+  films: FilmInfo[];
 }
 
-function MainScreen(props : MainScreenProps): JSX.Element {
+function MainScreen({films} : MainScreenProps): JSX.Element {
   return (
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={props.filmImage} alt={props.filmTitle} />
+          <img src={films[0].imageSrc} alt={films[0].name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -45,10 +43,10 @@ function MainScreen(props : MainScreenProps): JSX.Element {
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{props.filmTitle}</h2>
+              <h2 className="film-card__title">{films[0].name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{props.filmGenre}</span>
-                <span className="film-card__year">{props.filmYear}</span>
+                <span className="film-card__genre">{films[0].genre}</span>
+                <span className="film-card__year">{films[0].year}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -108,48 +106,7 @@ function MainScreen(props : MainScreenProps): JSX.Element {
             </li>
           </ul>
 
-          <div className="catalog__films-list">
-            <FilmCard name='Fantastic Beasts: The Crimes of Grindelwald' imageSrc='img/fantastic-beasts-the-crimes-of-grindelwald.jpg' />
-
-            <FilmCard name='Bohemian Rhapsody' imageSrc='img/bohemian-rhapsody.jpg' />
-
-            <FilmCard name='Macbeth' imageSrc='img/macbeth.jpg' />
-
-            <FilmCard name='Aviator' imageSrc='img/aviator.jpg' />
-
-            <FilmCard name='We need to talk about Kevin' imageSrc='img/we-need-to-talk-about-kevin.jpg' />
-
-            <FilmCard name='What We Do in the Shadows' imageSrc='img/what-we-do-in-the-shadows.jpg' />
-
-            <FilmCard name='Revenant' imageSrc='img/revenant.jpg' />
-
-            <FilmCard name='Johnny English' imageSrc='img/johnny-english.jpg' />
-
-            <FilmCard name='Shutter Island' imageSrc='img/shutter-island.jpg' />
-
-            <FilmCard name='Pulp Fiction' imageSrc='img/pulp-fiction.jpg' />
-
-            <FilmCard name='No Country for Old Men' imageSrc='img/no-country-for-old-men.jpg' />
-
-            <FilmCard name='Snatch' imageSrc='img/snatch.jpg' />
-
-            <FilmCard name='Moonrise Kingdom' imageSrc='img/moonrise-kingdom.jpg' />
-
-            <FilmCard name='Seven Years in Tibet' imageSrc='img/seven-years-in-tibet.jpg' />
-
-            <FilmCard name='Midnight Special' imageSrc='img/midnight-special.jpg' />
-
-            <FilmCard name='War of the Worlds' imageSrc='img/war-of-the-worlds.jpg' />
-
-            <FilmCard name='Dardjeeling Limited' imageSrc='img/dardjeeling-limited.jpg' />
-
-            <FilmCard name='Orlando' imageSrc='img/orlando.jpg' />
-
-            <FilmCard name='Mindhunter' imageSrc='img/mindhunter.jpg' />
-
-            <FilmCard name='Midnight Special' imageSrc='img/midnight-special.jpg' />
-
-          </div>
+          <FilmList films={films}/>
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>

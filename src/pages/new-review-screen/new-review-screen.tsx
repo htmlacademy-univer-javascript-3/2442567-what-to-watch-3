@@ -1,4 +1,20 @@
-function NewReviewScreen() {
+import {FilmInfo} from '../../types/types.ts';
+import {useParams} from 'react-router-dom';
+import { useState, ChangeEvent } from 'react';
+
+type NewReviewScreenProps = {
+  films: FilmInfo[];
+}
+
+function NewReviewScreen({films}: NewReviewScreenProps): JSX.Element {
+  const { id } = useParams();
+  const movie = (films.find((film) => film.id === +(id ?? 1)) ?? films[0]);
+
+  const [formData, setFormData] = useState({
+    score: [false, false, false, false, false, false, false, false, false, false],
+    comment: '',
+  });
+
   return(
     <section className="film-card film-card--full">
       <div className="film-card__header">
@@ -20,7 +36,7 @@ function NewReviewScreen() {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a href="film-page.html" className="breadcrumbs__link">The Grand Budapest Hotel</a>
+                <a href="film-page.html" className="breadcrumbs__link">{movie.name}</a>
               </li>
               <li className="breadcrumbs__item">
                 <a className="breadcrumbs__link">Add review</a>
@@ -41,7 +57,7 @@ function NewReviewScreen() {
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
+          <img src={movie.imageSrc} alt={movie.name} width="218" height="327" />
         </div>
       </div>
 
@@ -49,40 +65,27 @@ function NewReviewScreen() {
         <form action="#" className="add-review__form">
           <div className="rating">
             <div className="rating__stars">
-              <input className="rating__input" id="star-10" type="radio" name="rating" value="10" />
-              <label className="rating__label" htmlFor="star-10">Rating 10</label>
-
-              <input className="rating__input" id="star-9" type="radio" name="rating" value="9" />
-              <label className="rating__label" htmlFor="star-9">Rating 9</label>
-
-              <input className="rating__input" id="star-8" type="radio" name="rating" value="8" checked />
-              <label className="rating__label" htmlFor="star-8">Rating 8</label>
-
-              <input className="rating__input" id="star-7" type="radio" name="rating" value="7" />
-              <label className="rating__label" htmlFor="star-7">Rating 7</label>
-
-              <input className="rating__input" id="star-6" type="radio" name="rating" value="6" />
-              <label className="rating__label" htmlFor="star-6">Rating 6</label>
-
-              <input className="rating__input" id="star-5" type="radio" name="rating" value="5" />
-              <label className="rating__label" htmlFor="star-5">Rating 5</label>
-
-              <input className="rating__input" id="star-4" type="radio" name="rating" value="4" />
-              <label className="rating__label" htmlFor="star-4">Rating 4</label>
-
-              <input className="rating__input" id="star-3" type="radio" name="rating" value="3" />
-              <label className="rating__label" htmlFor="star-3">Rating 3</label>
-
-              <input className="rating__input" id="star-2" type="radio" name="rating" value="2" />
-              <label className="rating__label" htmlFor="star-2">Rating 2</label>
-
-              <input className="rating__input" id="star-1" type="radio" name="rating" value="1" />
-              <label className="rating__label" htmlFor="star-1">Rating 1</label>
+            {
+              formData.score.map((isChecked, id) => {
+                const inputValue = formData.score.length - id
+                const keyValue = `star-${inputValue}`;
+                return (
+                  <>
+                    <input className="rating__input" id={keyValue} type="radio" name="rating" value={inputValue} checked={isChecked}
+                      onChange={({target}: ChangeEvent<HTMLInputElement>) => {
+                        const value = target.checked;
+                        setFormData({...formData, score: [...formData.score.slice(0, id), value, ...formData.score.slice(id+1)]});}} />
+                    <label className="rating__label" htmlFor={keyValue}>Rating {inputValue}</label>
+                  </>
+                );
+              })
+            } 
             </div>
           </div>
 
           <div className="add-review__text">
-            <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text"></textarea>
+            <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text"
+            onChange={(evt) => {setFormData({...formData, comment: evt.target.value});}}></textarea>
             <div className="add-review__submit">
               <button className="add-review__btn" type="submit">Post</button>
             </div>
