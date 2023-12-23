@@ -25,7 +25,6 @@ function App(props: AppProps): JSX.Element {
             <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
               <PersonalMoviesScreen films={props.film}/>
             </PrivateRoute>
-            
           } />
           <Route path={AppRoute.Film}>
             <Route index element={<MoviePageScreen films={props.film}/>}/>
