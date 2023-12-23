@@ -1,26 +1,22 @@
 import {useNavigate} from 'react-router-dom';
+import { FilmInfo } from '../../types/types';
+import VideoPlayer from '../video-player/video-player';
 
 type FilmCardProps = {
-  id: number;
-  name: string;
-  imageSrc: string;
-  onActive: (id: number) => void;
+  film: FilmInfo;
 }
 
-function FilmCard(props: FilmCardProps) {
+function FilmCard({film}: FilmCardProps) {
   const navigate = useNavigate();
   return (
     <article className="small-film-card catalog__films-card"
-      onMouseEnter={() => {
-        props.onActive(props.id);
-      }}
-      onClick={() => navigate(`films/${props.id}`)}
+    onClick={() => navigate(`film/${film.id}`)}
     >
-      <div className="small-film-card__image">
-        <img src={props.imageSrc} alt={props.name} width="280" height="175" />
-      </div>
+      <VideoPlayer src='https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4'
+        posterSrc={film.imageSrc}
+      />
       <h3 className="small-film-card__title">
-        <a className="small-film-card__link" href="film-page.html">{props.name}</a>
+        <a className="small-film-card__link" href="film-page.html">{film.name}</a>
       </h3>
     </article>
   );
